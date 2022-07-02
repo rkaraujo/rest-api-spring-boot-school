@@ -3,7 +3,10 @@ package school.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import school.model.Course;
+import school.model.Student;
 import school.repository.CourseRepository;
+
+import java.util.List;
 
 @Service
 public class CourseService {
@@ -19,4 +22,8 @@ public class CourseService {
         return courseRepository.save(course);
     }
 
+    public List<Student> getStudents(Integer id) {
+        Course course = courseRepository.getReferenceById(id);
+        return course.getStudents();
+    }
 }

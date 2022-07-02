@@ -1,14 +1,15 @@
 package school.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import school.dto.CourseDTO;
+import school.dto.StudentDTO;
 import school.model.Course;
+import school.model.Student;
 import school.service.CourseService;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 public class CourseController {
@@ -22,19 +23,13 @@ public class CourseController {
 
     @PostMapping("/v1/course")
     public CourseDTO create(@Valid @RequestBody CourseDTO courseDTO) {
-        Course createdCourse = courseService.create(toEntity(courseDTO));
-        return toDTO(createdCourse);
+        Course createdCourse = courseService.create(courseDTO.toEntity());
+        return CourseDTO.toDTO(createdCourse);
     }
 
-    private CourseDTO toDTO(Course course) {
-        return new CourseDTO(course.getId(), course.getName(), course.getCode());
+    @GetMapping("/v1/course/{id}/students")
+    public List<StudentDTO> getStudents(@PathVariable Integer id) {
+        List<Student> students = courseService.getStudents(id);
+        return students.stream().map(StudentDTO::toDTO).toList();
     }
-
-    private Course toEntity(CourseDTO courseDTO) {
-        Course course = new Course();
-        course.setName(courseDTO.name());
-        course.setCode(courseDTO.code());
-        return course;
-    }
-
 }
