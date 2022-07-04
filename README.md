@@ -38,7 +38,7 @@ Body example:
 }
 ~~~
 
-### Create student
+### Register student in course
 ~~~
 PUT http://localhost:6868/v1/student/{studentId}/register-to-course/{courseId}
 
